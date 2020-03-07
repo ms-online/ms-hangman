@@ -16,7 +16,7 @@ let selectedWord = words[Math.floor(Math.random() * words.length)];
 const correctLetters = [];
 const wrongLetters = [];
 
-// 显示单词函数
+// 第二步 显示单词函数
 function displayWord() {
   wordEl.innerHTML = `
     ${selectedWord
@@ -38,4 +38,37 @@ function displayWord() {
   }
 }
 
+// 第四步 showNotification函数
+function showNotification() {
+  notification.classList.add("show");
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+// 第三步 按下键盘中的字母的事件监听
+window.addEventListener("keydown", e => {
+  // console.log(e.keyCode);
+  if (e.keyCode >= 65 && e.keyCode <= 90) {
+    const letter = e.key;
+
+    if (selectedWord.includes(letter)) {
+      if (!correctLetters.includes(letter)) {
+        correctLetters.push(letter);
+
+        displayWord();
+      } else {
+        showNotification();
+      }
+    } else {
+      if (!wrongLetters.includes(letter)) {
+        wrongLetters.push(letter);
+
+        updateWrongLettersEl();
+      } else {
+        showNotification();
+      }
+    }
+  }
+});
 displayWord();
