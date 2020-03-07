@@ -38,6 +38,32 @@ function displayWord() {
   }
 }
 
+// 第五步 updateWrongLettersEl
+function updateWrongLettersEl() {
+  // 显示错误字母
+  wrongLettersEl.innerHTML = `
+    ${wrongLetters.length > 0 ? "<p>错误</p>" : ""}
+    ${wrongLetters.map(letter => `<span>${letter}</span>`)}
+  `;
+
+  // 显示火柴人身体
+  figureParts.forEach((part, index) => {
+    const errors = wrongLetters.length;
+
+    if (index < errors) {
+      part.style.display = "block";
+    } else {
+      part.style.display = "none";
+    }
+  });
+
+  // 机会用完显示弹出框
+  if (wrongLetters.length === figureParts.length) {
+    finalMessage.innerText = "抱歉输入错误，游戏结束. 😕";
+    popup.style.display = "flex";
+  }
+}
+
 // 第四步 showNotification函数
 function showNotification() {
   notification.classList.add("show");
@@ -71,4 +97,19 @@ window.addEventListener("keydown", e => {
     }
   }
 });
+
+//第六步 再玩一次按钮的事件监听
+playAgainBtn.addEventListener("click", () => {
+  correctLetters.splice(0);
+  wrongLetters.splice(0);
+
+  selectedWord = words[Math.floor(Math.random() * words.length)];
+
+  displayWord();
+
+  updateWrongLettersEl();
+
+  popup.style.display = "none";
+});
+
 displayWord();
